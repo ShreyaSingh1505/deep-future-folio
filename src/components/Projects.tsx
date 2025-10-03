@@ -1,5 +1,6 @@
 import { ExternalLink, Github, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const Projects = () => {
   const projects = [
@@ -46,9 +47,10 @@ const Projects = () => {
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           Featured Projects
         </h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          A collection of AI/ML and web development projects showcasing my skills and passion
+        <p className="text-center text-muted-foreground mb-4 max-w-2xl mx-auto">
+          Projects are under development. Below are some of my ongoing and planned works in AI, ML, and web development.
         </p>
+        <p className="text-center text-primary font-semibold mb-8">More projects and details coming soon!</p>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {projects.map((project, index) => (
@@ -57,15 +59,18 @@ const Projects = () => {
               className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_hsl(190,100%,50%,0.2)] animate-fade-in-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Image Placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                <Image className="w-16 h-16 text-muted-foreground/30" />
-                <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60"></div>
-                <div className="absolute bottom-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                  {project.category}
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80">
-                  <p className="text-muted-foreground text-sm">Project image will go here</p>
+              {/* Related Project Image + Placeholder */}
+              <div className="flex flex-col items-center">
+                {/* Related image for each project (replace src with your actual images) */}
+                {/* No placeholder image, only icon and overlay */}
+                <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                  <Image className="w-16 h-16 text-muted-foreground/30" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60"></div>
+                  <div className="absolute bottom-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                    {project.category}
+                  </div>
+                  {/* Removed 'Project image will go here' text */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80"></div>
                 </div>
               </div>
 

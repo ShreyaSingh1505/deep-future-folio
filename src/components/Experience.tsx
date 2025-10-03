@@ -4,34 +4,19 @@ const Experience = () => {
   const timeline = [
     {
       type: "education",
-      title: "Bachelor's in Computer Science",
-      organization: "University Name",
-      period: "2020 - 2024",
-      description: "Focused on AI, Machine Learning, and Software Development. Graduated with honors.",
+      title: "B. Tech in Computer Science and Engineering",
+      organization: "Noida Institute of Engineering and Technology (NIET), Greater Noida",
+      period: "2024 - 2028",
+      description: "Currently pursuing B. Tech in Computer Science and Engineering. Key coursework includes Data Structures, Algorithms, Artificial Intelligence, Machine Learning, and Web Development. Active member of coding clubs and hackathons. Achievements: Top 10 in NIET Coding Challenge 2025, participated in Smart India Hackathon.",
       icon: GraduationCap,
+      highlight: true,
     },
     {
       type: "experience",
-      title: "ML Intern",
-      organization: "Tech Company",
-      period: "Summer 2023",
-      description: "Worked on machine learning models for data analysis and prediction systems.",
-      icon: Briefcase,
-    },
-    {
-      type: "education",
-      title: "AI & ML Online Courses",
-      organization: "Coursera / Udemy",
-      period: "2022 - Present",
-      description: "Completed multiple courses on deep learning, neural networks, and advanced ML algorithms.",
-      icon: GraduationCap,
-    },
-    {
-      type: "experience",
-      title: "Freelance Web Developer",
-      organization: "Self-Employed",
-      period: "2021 - Present",
-      description: "Built responsive websites and web applications for small businesses and individuals.",
+      title: "Fresher",
+      organization: "No professional experience yet",
+      period: "2024 - Present",
+      description: "Currently focused on learning, building projects, and participating in hackathons and coding competitions.",
       icon: Briefcase,
     },
   ];
@@ -40,10 +25,10 @@ const Experience = () => {
     <section id="experience" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Experience & Education
+          Education & Experience
         </h2>
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          My journey through learning and professional growth
+          Dedicated to building a strong foundation in computer science, engineering principles, and real-world problem solving through academic excellence and hands-on projects.
         </p>
 
         <div className="max-w-4xl mx-auto relative">
@@ -69,7 +54,7 @@ const Experience = () => {
               <div
                 className={`ml-20 md:ml-0 ${
                   index % 2 === 0 ? "md:mr-12" : "md:ml-12"
-                } p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_hsl(190,100%,50%,0.2)] group`}
+                } p-6 rounded-2xl bg-card border border-border transition-all duration-300 group ${item.highlight ? "border-2 border-primary shadow-lg" : "hover:border-primary/50 hover:shadow-[0_0_30px_hsl(190,100%,50%,0.2)]"} ${item.title === "Fresher" ? "pb-8" : ""}`}
               >
                 <div className="flex items-start gap-4">
                   <div

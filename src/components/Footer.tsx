@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Mail, Github, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -9,16 +9,21 @@ const Footer = () => {
             © {new Date().getFullYear()} Shreya Singh. Built with{" "}
             <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" /> and passion
           </p>
-          <div className="flex gap-6">
-            <a href="#about" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-              About
-            </a>
-            <a href="#projects" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-              Projects
-            </a>
-            <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-              Contact
-            </a>
+          <div className="flex gap-6 items-center">
+            <a href="#about" className="text-muted-foreground hover:text-primary transition-colors text-sm">About</a>
+            <a href="#projects" className="text-muted-foreground hover:text-primary transition-colors text-sm">Projects</a>
+            <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors text-sm">Contact</a>
+            <span className="flex gap-3 ml-4">
+              <a href="mailto:singhshreya1505@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                <Mail className="w-5 h-5" />
+              </a>
+              <a href="https://github.com/ShreyaSingh1505" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href="https://www.linkedin.com/in/shreya-singh-8ab20b311/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </span>
           </div>
         </div>
       </div>
