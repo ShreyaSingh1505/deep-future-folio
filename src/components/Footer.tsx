@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm flex items-center gap-2">
-            © {new Date().getFullYear()} Your Name. Built with{" "}
+            © {new Date().getFullYear()} Shreya Singh. Built with{" "}
             <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" /> and passion
           </p>
           <div className="flex gap-6">
