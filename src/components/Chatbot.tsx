@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Mic, MicOff } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,11 +21,42 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
   const { toast } = useToast();
   const scrollRef = useRef<HTMLDivElement>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
 
   useEffect(() => {
+    // Setup SpeechRecognition for voice input
+    if (typeof window !== "undefined" && 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+      recognitionRef.current.onresult = (event: any) => {
+        let interimTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          interimTranscript += event.results[i][0].transcript;
+        }
+        setInput(interimTranscript);
+        // If final, auto-send
+        if (event.results[event.results.length - 1].isFinal) {
+          setIsListening(false);
+          setTimeout(() => {
+            handleSendVoice(interimTranscript);
+          }, 300);
+        }
+      };
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+        toast({ title: "Voice Error", description: "Could not recognize speech.", variant: "destructive" });
+      };
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
     if (typeof window !== "undefined" && window.speechSynthesis) {
       synthRef.current = window.speechSynthesis;
     }
@@ -34,7 +66,7 @@ const Chatbot = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const speak = (text: string) => {
     if (!voiceEnabled || !synthRef.current) return;
@@ -74,6 +106,50 @@ const Chatbot = () => {
     if (synthRef.current) {
       synthRef.current.cancel();
       setIsSpeaking(false);
+    }
+  };
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      setIsListening(true);
+      recognitionRef.current.start();
+    } else {
+      toast({ title: "Voice Not Supported", description: "Speech recognition is not supported in this browser.", variant: "destructive" });
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
+  // Send message from voice input
+  const handleSendVoice = async (voiceText: string) => {
+    if (!voiceText.trim() || isLoading) return;
+    setInput("");
+    setMessages(prev => [...prev, { role: "user", content: voiceText }]);
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("chat-with-aria", {
+        body: { message: voiceText }
+      });
+      if (error) throw error;
+      const assistantMessage = data.response;
+      setMessages(prev => [...prev, { role: "assistant", content: assistantMessage }]);
+      if (voiceEnabled) {
+        setTimeout(() => speak(assistantMessage), 100);
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to get response. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -203,13 +279,28 @@ const Chatbot = () => {
               }}
               className="flex gap-2"
             >
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
+              <div className="relative flex-1">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={isListening ? "Listening..." : "Type or speak your message..."}
+                  disabled={isLoading}
+                  className={`flex-1 ${isListening ? "ring-2 ring-pink-500 animate-pulse" : ""}`}
+                />
+                {isListening && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 animate-pulse text-pink-500 text-xs font-bold">Listening...</span>
+                )}
+              </div>
+              <Button
+                type="button"
+                size="icon"
+                onClick={isListening ? stopListening : startListening}
                 disabled={isLoading}
-                className="flex-1"
-              />
+                aria-label="Speak"
+                className={`transition-all duration-300 ${isListening ? "bg-pink-100 scale-110 shadow-lg animate-bounce" : ""}`}
+              >
+                {isListening ? <MicOff className="h-4 w-4 text-pink-500 animate-bounce" /> : <Mic className="h-4 w-4" />}
+              </Button>
               <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                 <Send className="h-4 w-4" />
               </Button>
