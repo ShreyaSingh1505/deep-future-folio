@@ -1,73 +1,49 @@
-# Welcome to your Lovable project
+# Deep Future Folio
 
-## Project info
+![Project Badge](https://img.shields.io/badge/Project-Deep%20Future%20Folio-blue)
+![License Badge](https://img.shields.io/badge/License-MIT-green)
+![Tech Stack](https://img.shields.io/badge/Tech-React%20|%20TypeScript%20|%20Tailwind%20CSS-blue)
 
-**URL**: https://lovable.dev/projects/103ed80e-8f06-4a89-aa3b-b19695eb7f1d
+A modern, responsive web application built with **React**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Supabase**.  
+Deep Future Folio is designed as a clean, scalable, and developer-friendly project with a modern UI and backend integration.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+- ⚡ **Fast Development:** Powered by Vite for rapid builds and hot module replacement  
+- ⚛️ **React + TypeScript:** Type-safe, reusable component-based architecture  
+- 🎨 **Tailwind CSS:** Responsive, modern styling  
+- 📦 **Shadcn/UI:** Pre-built UI components for consistent design  
+- 🔐 **Supabase Integration:** Database, authentication, and API services  
+- 📱 **Mobile-First Design:** Fully responsive across devices  
+- 🛠 **Developer Tools:** ESLint & Prettier for consistent code quality  
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/103ed80e-8f06-4a89-aa3b-b19695eb7f1d) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🏗 Tech Stack & Architecture
 
-**Use your preferred IDE**
+**Frontend:**  
+- **React** for dynamic UI  
+- **TypeScript** for type safety and developer productivity  
+- **Tailwind CSS** for modern, responsive design  
+- **Shadcn/UI** components for a consistent design system  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**Backend / Services:**  
+- **Supabase** for authentication, database, and APIs  
+- **Vite** for a fast development and build environment  
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Architecture Highlights:**  
+- Component-based design for scalability  
+- Modular folder structure for maintainability  
+- Environment variables for secure configuration  
+- Mobile-first responsive layout  
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🛠 Installation & Setup
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/103ed80e-8f06-4a89-aa3b-b19695eb7f1d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### 1. Clone the repository
+```bash
+git clone https://github.com/ShreyaSingh1505/deep-future-folio.git
+cd deep-future-folio
