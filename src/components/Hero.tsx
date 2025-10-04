@@ -49,7 +49,15 @@ const Hero = () => {
               View My Work
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="glowOutline" size="lg">
+            <Button 
+              variant="glowOutline" 
+              size="lg"
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = 'mailto:singhshreya1505@gmail.com?subject=Resume%20Request&body=Hi%2C%20I%20would%20like%20to%20request%20your%20resume.';
+                link.click();
+              }}
+            >
               <Download className="mr-2" />
               Download Resume
             </Button>

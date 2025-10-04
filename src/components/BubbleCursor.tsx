@@ -1,99 +1,188 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const BubbleCursor: React.FC = () => {
-  // Inject keyframes for bubblePulse animation once
-  React.useEffect(() => {
-    if (!document.getElementById('bubblePulseKeyframes')) {
-      const style = document.createElement('style');
-      style.id = 'bubblePulseKeyframes';
-      style.innerHTML = `@keyframes bubblePulse {
-        0% { transform: scale(1); opacity: 0.5; }
-        50% { transform: scale(1.15); opacity: 0.7; }
-        100% { transform: scale(1); opacity: 0.5; }
-      }`;
-      document.head.appendChild(style);
-    }
-  }, []);
-  // Inject keyframes for bubblePulse animation once
-  useEffect(() => {
-    if (!document.getElementById('bubblePulseKeyframes')) {
-      const style = document.createElement('style');
-      style.id = 'bubblePulseKeyframes';
-      style.innerHTML = `@keyframes bubblePulse {
-        0% { transform: scale(1.1); box-shadow: 0 0 30px 10px #a78bfa44; }
-        50% { transform: scale(0.8); box-shadow: 0 0 40px 20px #a78bfa66; }
-        100% { transform: scale(1.1); box-shadow: 0 0 30px 10px #a78bfa44; }
-      }`;
-      document.head.appendChild(style);
-    }
-  }, []);
   const bubbleRef = useRef<HTMLDivElement>(null);
-  const [isIdle, setIsIdle] = useState(true);
+  const trailRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    let idleTimeout: NodeJS.Timeout;
+    if (!document.getElementById('bubbleCursorKeyframes')) {
+      const style = document.createElement('style');
+      style.id = 'bubbleCursorKeyframes';
+      style.innerHTML = `
+        @keyframes bubbleFloat {
+          0%, 100% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-8px) scale(1.05); }
+        }
+        @keyframes bubbleGlow {
+          0%, 100% { 
+            box-shadow: 0 0 20px 4px hsl(190, 100%, 50%, 0.6), 
+                        0 0 40px 8px hsl(270, 80%, 60%, 0.4),
+                        inset 0 0 20px hsl(190, 100%, 50%, 0.3);
+          }
+          50% { 
+            box-shadow: 0 0 30px 8px hsl(190, 100%, 50%, 0.8), 
+                        0 0 60px 12px hsl(270, 80%, 60%, 0.6),
+                        inset 0 0 30px hsl(270, 80%, 60%, 0.4);
+          }
+        }
+        @keyframes trailFade {
+          0% { opacity: 0.6; transform: scale(1); }
+          100% { opacity: 0; transform: scale(0.3); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
+  useEffect(() => {
+    let animationFrameId: number;
+    const trail: Array<{ x: number; y: number; timestamp: number }> = [];
+    const maxTrailLength = 5;
+
     const handleMouseMove = (e: MouseEvent) => {
       if (bubbleRef.current) {
-        bubbleRef.current.style.left = `${e.clientX - 20}px`;
-        bubbleRef.current.style.top = `${e.clientY - 20}px`;
+        bubbleRef.current.style.left = `${e.clientX}px`;
+        bubbleRef.current.style.top = `${e.clientY}px`;
       }
-      setIsIdle(false);
-      clearTimeout(idleTimeout);
-      idleTimeout = setTimeout(() => setIsIdle(true), 600);
+
+      trail.push({ x: e.clientX, y: e.clientY, timestamp: Date.now() });
+      if (trail.length > maxTrailLength) {
+        trail.shift();
+      }
+
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(() => {
+        trail.forEach((point, index) => {
+          if (trailRefs.current[index]) {
+            const opacity = (index + 1) / maxTrailLength;
+            trailRefs.current[index].style.left = `${point.x}px`;
+            trailRefs.current[index].style.top = `${point.y}px`;
+            trailRefs.current[index].style.opacity = `${opacity * 0.4}`;
+          }
+        });
+      });
     };
+
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      clearTimeout(idleTimeout);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    <div
-      ref={bubbleRef}
-      style={{
-        position: "fixed",
-        left: 0,
-        top: 0,
-        width: 48,
-        height: 48,
-        pointerEvents: "none",
-        zIndex: 9999,
-        transition: "left 0.1s, top 0.1s",
-      }}
-    >
-      {/* Subtle hollow animated ring */}
+    <>
+      {/* Trail bubbles */}
+      {[...Array(5)].map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            if (el) trailRefs.current[i] = el;
+          }}
+          style={{
+            position: "fixed",
+            left: -100,
+            top: -100,
+            width: 32 - i * 4,
+            height: 32 - i * 4,
+            pointerEvents: "none",
+            zIndex: 9998,
+            transform: "translate(-50%, -50%)",
+            transition: "opacity 0.3s ease-out",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              background: `linear-gradient(135deg, 
+                hsl(190, 100%, 50%, ${0.3 - i * 0.05}), 
+                hsl(270, 80%, 60%, ${0.2 - i * 0.04}))`,
+              filter: "blur(8px)",
+            }}
+          />
+        </div>
+      ))}
+
+      {/* Main cursor bubble */}
       <div
+        ref={bubbleRef}
         style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: 48,
-          height: 48,
-          borderRadius: "50%",
-          border: "2px solid #a78bfa88",
-          boxSizing: "border-box",
-          opacity: 0.22,
-          animation: "bubblePulse 1.4s infinite cubic-bezier(.4,0,.6,1)",
+          position: "fixed",
+          left: -100,
+          top: -100,
+          width: 56,
+          height: 56,
+          pointerEvents: "none",
+          zIndex: 9999,
+          transform: "translate(-50%, -50%)",
+          transition: "transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
         }}
-      />
-      {/* Small subtle bubble at top left inside ring */}
-      <div
-        style={{
-          position: "absolute",
-          left: 8,
-          top: 8,
-          width: 12,
-          height: 12,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #4f8cff 40%, #a78bfa 60%, #d946ef 100%)",
-          boxShadow: "0 0 6px 2px #a78bfa44",
-          opacity: 0.55,
-        }}
-      />
-    </div>
+      >
+        {/* Outer glow ring */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "120%",
+            height: "120%",
+            transform: "translate(-50%, -50%)",
+            borderRadius: "50%",
+            background: "radial-gradient(circle, hsl(190, 100%, 50%, 0.3) 0%, transparent 70%)",
+            animation: "bubbleFloat 2s ease-in-out infinite",
+          }}
+        />
+
+        {/* Main bubble */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "100%",
+            height: "100%",
+            transform: "translate(-50%, -50%)",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, hsl(190, 100%, 50%, 0.25), hsl(270, 80%, 60%, 0.25))",
+            border: "2px solid hsl(190, 100%, 50%, 0.6)",
+            backdropFilter: "blur(10px)",
+            animation: "bubbleGlow 2s ease-in-out infinite",
+          }}
+        />
+
+        {/* Inner highlight */}
+        <div
+          style={{
+            position: "absolute",
+            left: "28%",
+            top: "28%",
+            width: "35%",
+            height: "35%",
+            borderRadius: "50%",
+            background: "radial-gradient(circle at 30% 30%, hsl(190, 100%, 70%, 0.8), transparent)",
+            filter: "blur(4px)",
+          }}
+        />
+
+        {/* Center dot */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "20%",
+            height: "20%",
+            transform: "translate(-50%, -50%)",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, hsl(190, 100%, 60%), hsl(270, 80%, 70%))",
+            boxShadow: "0 0 10px hsl(190, 100%, 50%, 0.8)",
+          }}
+        />
+      </div>
+    </>
   );
 };
-
 
 export default BubbleCursor;
