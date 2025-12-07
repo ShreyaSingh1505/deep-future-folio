@@ -1,6 +1,7 @@
 import { ExternalLink, Github, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBg from "@/assets/hero-bg.jpg";
+import shreyaImg from "@/assets/shreya.jpeg";
+import portfolioCard from "@/assets/portfolio-card.jpg";
 
 const Projects = () => {
   const projects = [
@@ -10,7 +11,7 @@ const Projects = () => {
         "Machine learning model for predictive analytics using Python and scikit-learn. Achieved 92% accuracy on test data.",
       category: "Machine Learning",
       tags: ["Python", "ML", "Data Science"],
-      github: "#",
+      github: "https://github.com/ShreyaSingh1505",
       demo: "#",
     },
     {
@@ -19,7 +20,7 @@ const Projects = () => {
         "Intelligent conversational AI chatbot with natural language processing capabilities. Built with NLP libraries.",
       category: "Artificial Intelligence",
       tags: ["Python", "NLP", "AI"],
-      github: "#",
+      github: "https://github.com/ShreyaSingh1505",
       demo: "#",
     },
     {
@@ -28,7 +29,7 @@ const Projects = () => {
         "Interactive web dashboard for visualizing complex datasets with real-time updates and insights.",
       category: "Data Analysis",
       tags: ["JavaScript", "D3.js", "Python"],
-      github: "#",
+      github: "https://github.com/ShreyaSingh1505",
       demo: "#",
     },
     {
@@ -36,8 +37,9 @@ const Projects = () => {
       description: "Responsive personal portfolio website built with modern web technologies and best practices.",
       category: "Web Development",
       tags: ["HTML", "CSS", "JavaScript"],
-      github: "#",
+      github: "https://github.com/ShreyaSingh1505/deep-future-folio",
       demo: "#",
+      image: portfolioCard,
     },
   ];
 
@@ -64,12 +66,19 @@ const Projects = () => {
                 {/* Related image for each project (replace src with your actual images) */}
                 {/* No placeholder image, only icon and overlay */}
                 <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                  <Image className="w-16 h-16 text-muted-foreground/30" />
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image className="w-16 h-16 text-muted-foreground/30" />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60"></div>
                   <div className="absolute bottom-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
                     {project.category}
                   </div>
-                  {/* Removed 'Project image will go here' text */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80"></div>
                 </div>
               </div>

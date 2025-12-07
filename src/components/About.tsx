@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import shreyaImg from "@/assets/shreya.jpeg";
 
 const About = () => {
   return (
@@ -10,13 +10,10 @@ const About = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Photo Placeholder */}
+            {/* Shreya's Photo */}
             <div className="relative group">
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 flex items-center justify-center overflow-hidden hover:border-primary/60 transition-all duration-300">
-                <User className="w-32 h-32 text-muted-foreground/30" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                  <p className="text-muted-foreground text-sm">Your photo will go here</p>
-                </div>
+                <img src={shreyaImg} alt="Shreya Singh" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300 -z-10"></div>
             </div>

@@ -16,6 +16,8 @@ const Index = () => {
       <About />
       <Skills />
       <Projects />
+      {/* Education Section Anchor for Navigation */}
+      <section id="education"></section>
       <Experience />
       <Contact />
       <Footer />
