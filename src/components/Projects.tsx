@@ -1,121 +1,178 @@
-import { ExternalLink, Github, Image } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import shreyaImg from "@/assets/shreya.jpeg";
-import portfolioCard from "@/assets/portfolio-card.jpg";
+import { useEffect, useRef } from "react";
+import { ExternalLink, Github } from "lucide-react";
+
+const projects = [
+  {
+    num:    "01",
+    title:  "Women Safety Crime Analytics",
+    desc:   "A machine learning dashboard that analyses crime pattern data to surface insights relevant to women's safety. Built with Python, pandas, and visualisation libraries.",
+    tags:   ["Python", "ML", "pandas", "Data Viz"],
+    cat:    "Machine Learning",
+    github: "https://github.com/ShreyaSingh1505",
+    demo:   null,
+  },
+  {
+    num:    "02",
+    title:  "Aria — AI Chatbot Assistant",
+    desc:   "Full-stack conversational AI with voice input, NLP capabilities, and real-time context memory. Frontend in React/TypeScript, backend powered by Supabase edge functions.",
+    tags:   ["React", "TypeScript", "NLP", "Supabase"],
+    cat:    "Artificial Intelligence",
+    github: "https://github.com/ShreyaSingh1505/deep-future-folio",
+    demo:   "https://shreya-memento.vercel.app/",
+  },
+  {
+    num:    "03",
+    title:  "AI Prediction Model",
+    desc:   "Supervised learning model for predictive analytics trained on real-world datasets. Explores classification and regression approaches using scikit-learn.",
+    tags:   ["Python", "scikit-learn", "ML"],
+    cat:    "Machine Learning",
+    github: "https://github.com/ShreyaSingh1505",
+    demo:   null,
+  },
+  {
+    num:    "04",
+    title:  "Portfolio Website",
+    desc:   "This site — built with React, TypeScript, and TailwindCSS. Features an embedded AI chatbot (Aria), animated UI, direct resume download, and Supabase contact backend.",
+    tags:   ["React", "TypeScript", "Tailwind", "Vercel"],
+    cat:    "Web Development",
+    github: "https://github.com/ShreyaSingh1505/deep-future-folio",
+    demo:   "https://shreya-memento.vercel.app/",
+  },
+];
 
 const Projects = () => {
-  const projects = [
-    {
-      title: "AI Prediction Model",
-      description:
-        "Machine learning model for predictive analytics using Python and scikit-learn. Achieved 92% accuracy on test data.",
-      category: "Machine Learning",
-      tags: ["Python", "ML", "Data Science"],
-      github: "https://github.com/ShreyaSingh1505",
-      demo: "#",
-    },
-    {
-      title: "Chatbot Assistant",
-      description:
-        "Intelligent conversational AI chatbot with natural language processing capabilities. Built with NLP libraries.",
-      category: "Artificial Intelligence",
-      tags: ["Python", "NLP", "AI"],
-      github: "https://github.com/ShreyaSingh1505",
-      demo: "#",
-    },
-    {
-      title: "Data Visualization Dashboard",
-      description:
-        "Interactive web dashboard for visualizing complex datasets with real-time updates and insights.",
-      category: "Data Analysis",
-      tags: ["JavaScript", "D3.js", "Python"],
-      github: "https://github.com/ShreyaSingh1505",
-      demo: "#",
-    },
-    {
-      title: "Portfolio Website",
-      description: "Responsive personal portfolio website built with modern web technologies and best practices.",
-      category: "Web Development",
-      tags: ["HTML", "CSS", "JavaScript"],
-      github: "https://github.com/ShreyaSingh1505/deep-future-folio",
-      demo: "#",
-      image: portfolioCard,
-    },
-  ];
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => e.target.classList.toggle("revealed", e.isIntersecting)),
+      { threshold: 0.1 }
+    );
+    ref.current?.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <section id="projects" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Featured Projects
-        </h2>
-        <p className="text-center text-muted-foreground mb-4 max-w-2xl mx-auto">
-          Projects are under development. Below are some of my ongoing and planned works in AI, ML, and web development.
-        </p>
-        <p className="text-center text-primary font-semibold mb-8">More projects and details coming soon!</p>
+    <section id="projects" className="py-28" ref={ref}>
+      <div className="max-w-6xl mx-auto px-6">
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {projects.map((project, index) => (
+        {/* Section marker */}
+        <div className="flex items-center gap-3 mb-6 reveal">
+          <span className="section-rule" />
+          <span
+            className="text-xs font-semibold tracking-widest uppercase"
+            style={{ fontFamily: "'DM Sans',sans-serif", color: "hsl(340,55%,68%)" }}
+          >
+            03 / Projects
+          </span>
+        </div>
+
+        {/* Heading */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-4 reveal" style={{ transitionDelay: "0.05s" }}>
+          <h2
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: "clamp(2.2rem, 5vw, 3.4rem)",
+              lineHeight: 1.12,
+              color: "hsl(36,25%,93%)",
+            }}
+          >
+            Selected{" "}
+            <em style={{ color: "hsl(340,55%,68%)" }}>work.</em>
+          </h2>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.88rem",
+              color: "hsl(30,10%,52%)",
+              maxWidth: "320px",
+            }}
+          >
+            Projects across ML, AI, and web — more in progress.
+          </p>
+        </div>
+
+        {/* Project list — editorial numbered list style */}
+        <div className="flex flex-col gap-0">
+          {projects.map((p, i) => (
             <div
-              key={project.title}
-              className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_hsl(190,100%,50%,0.2)] animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              key={p.num}
+              className="project-card mb-4 reveal"
+              style={{ transitionDelay: `${0.08 + i * 0.07}s` }}
             >
-              {/* Related Project Image + Placeholder */}
-              <div className="flex flex-col items-center">
-                {/* Related image for each project (replace src with your actual images) */}
-                {/* No placeholder image, only icon and overlay */}
-                <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image className="w-16 h-16 text-muted-foreground/30" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60"></div>
-                  <div className="absolute bottom-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                    {project.category}
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80"></div>
-                </div>
-              </div>
+              <div className="grid md:grid-cols-[auto_1fr_auto] gap-6 items-start">
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground mb-4">{project.description}</p>
+                {/* Number */}
+                <span
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: "1rem",
+                    color: "hsl(30,10%,35%)",
+                    paddingTop: "0.15rem",
+                    minWidth: "2rem",
+                  }}
+                >
+                  {p.num}
+                </span>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-muted text-muted-foreground text-sm border border-border"
+                {/* Main content */}
+                <div>
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <h3
+                      style={{
+                        fontFamily: "'DM Serif Display', serif",
+                        fontSize: "1.4rem",
+                        color: "hsl(36,25%,93%)",
+                        lineHeight: 1.2,
+                      }}
                     >
-                      {tag}
-                    </span>
-                  ))}
+                      {p.title}
+                    </h3>
+                    <span className="tag">{p.cat}</span>
+                  </div>
+
+                  <p
+                    className="mb-4"
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "0.9rem",
+                      color: "hsl(30,10%,56%)",
+                      lineHeight: 1.65,
+                      maxWidth: "560px",
+                    }}
+                  >
+                    {p.desc}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags.map(t => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-3">
-                  <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="w-4 h-4 mr-2" />
-                      Code
+                <div className="flex flex-col gap-2 pt-0.5">
+                  <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-btn"
+                    aria-label="GitHub"
+                  >
+                    <Github style={{ width: "1rem", height: "1rem" }} />
+                  </a>
+                  {p.demo && (
+                    <a
+                      href={p.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-btn"
+                      aria-label="Live demo"
+                    >
+                      <ExternalLink style={{ width: "1rem", height: "1rem" }} />
                     </a>
-                  </Button>
-                  <Button variant="default" size="sm" className="flex-1" asChild>
-                    <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Demo
-                    </a>
-                  </Button>
+                  )}
                 </div>
               </div>
             </div>
